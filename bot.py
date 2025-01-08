@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from typing import Literal
 import asyncio
 from roblox import Client
+import random
 import os
 intents = discord.Intents.all()
 intents.members = True
@@ -58,6 +59,43 @@ async def staffapplication (interaction: discord.Interaction, id: int , verify: 
         await applicationChannel.send(embed=embed)
     else: # todo: add checking for nteraction user rol
         await interaction.response.send_message("Application not sent!", ephemeral=True)
+
+@tree.command(
+    name='verify',
+    description='Verify your Roblox account by changing your description.',
+    guild=discord.Object(id=server_id)
+)
+@app_commands.describe(id="ID of the account you want to verify as.")
+async def verify(interaction: discord.Interaction, id: int):
+    robloxUser = await robloxAPI.get_user(id)
+    class Buttons(discord.ui.View):
+        def __init__(self, *, timeout=180):
+            super().__init__(timeout=timeout)
+        @discord.ui.button(label="Finish verification",style=discord.ButtonStyle.green)
+        async def finish_verification(self, interaction:discord.Interaction, view: discord.ui.View):
+            await asyncio.sleep(2)  # wait for 3 seconds
+            description = robloxUser.description # once button clicked, pull the users description and put it in a variable
+            if description == sentence:
+                embed.remove_field(0)
+                embed.remove_footer(0)
+                embed.add_field(name="Verified successfully!", value="Logging data, assigning roles...")
+                await interaction.response.send_message(embed=embed, ephemeral=True)
+                logs = bot.get_channel(1326599452013756508)
+                await logs.send(f"{interaction.user} just verified.", embed=embed)
+            else:
+                await interaction.response.send_message("Verification failed! Verify your data and try again! Notify hawktuahgamer if the bot still malfunctions.")
+
+    embed = discord.Embed(title=f"Verifying as {robloxUser.name}", color=discord.Color.yellow())
+
+    def createSentence():
+        words = ["town", "verify", "cake", "centre", "bot", "rehabilitation"]
+        return random.choice(words) + " " + random.choice(words)
+
+    sentence = createSentence()
+
+    embed.add_field(name="Edit your profile description to match ***exactly*** the following sentence.", value=f"`{sentence}`")
+    embed.set_footer(text="Press the button after editing the description to finish verification.")
+    await interaction.response.send_message(embed=embed, ephemeral=True, view=Buttons())
 
 
 load_dotenv()
