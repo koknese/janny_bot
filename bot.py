@@ -44,6 +44,14 @@ async def hello (interaction: discord.Interaction):
 )
 @app_commands.describe(id="Roblox ID", verify="You have verified that your ROBLOX ID is correct.")
 async def staffapplication (interaction: discord.Interaction, id: int , verify: Literal["No", "Yes"]):
+    class Buttons(discord.ui.View):
+        def __init__(self, *, timeout=180):
+            super().__init__(timeout=timeout)
+        @discord.ui.button(label="Accept application",style=discord.ButtonStyle.green)
+        async def accept_application(self, interaction:discord.Interaction, view: discord.ui.View):
+            await interaction.user.add_roles(discord.Object(id=1325846183502942238))
+            await interaction.response.send_message("Application accepted!")
+
     if verify == "Yes":
         embed = discord.Embed(title="Facility Staff Application sent!", color=discord.Color.yellow())
         embed.add_field(name="Provided ID", value=id, inline=True)
@@ -55,7 +63,7 @@ async def staffapplication (interaction: discord.Interaction, id: int , verify: 
         embed.add_field(name=f"ROBLOX Display Name", value=robloxUser.display_name, inline=True)
         embed.add_field(name=f"Discord username?", value=interaction.user, inline=True)
         applicationChannel = bot.get_channel(1325864260051534005)
-        await applicationChannel.send(embed=embed)
+        await applicationChannel.send(embed=embed, view=Buttons())
     else: # todo: add checking for nteraction user rol
         await interaction.response.send_message("Application not sent!", ephemeral=True)
 
