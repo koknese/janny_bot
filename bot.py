@@ -24,7 +24,8 @@ async def on_ready():
 
 @bot.event
 async def on_member_join(member):
-    role_patient = 1325846599003541545
+    patientID = 1325846599003541545
+    role_patient = discord.Object(id=role_patient)
     await member.add_roles(role_patient)
 
 @tree.command(
@@ -55,7 +56,7 @@ async def staffapplication (interaction: discord.Interaction, id: int , verify: 
         embed.add_field(name=f"Discord username?", value=interaction.user, inline=True)
         applicationChannel = bot.get_channel(1325864260051534005)
         await applicationChannel.send(embed=embed)
-    else: # todo: add checking for nteraction user role
+    else: # todo: add checking for nteraction user rol
         await interaction.response.send_message("Application not sent!", ephemeral=True)
 
 
