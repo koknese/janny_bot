@@ -14,7 +14,6 @@ robloxAPI = Client()
 bot = commands.Bot(command_prefix="sudo ", intents=intents)
 tree = bot.tree
 
-# Load cogs
 @bot.event
 async def on_ready():
     print(f"We have logged in as {bot.user}")
