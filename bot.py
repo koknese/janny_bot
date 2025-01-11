@@ -41,7 +41,7 @@ async def hello (interaction: discord.Interaction):
         description='Apply to become facility staff. Most people are expected to be accepted!',
         guild=discord.Object(id=server_id)
 )
-@app_commands.describe(id="Roblox ID", verify="You have verified that your ROBLOX ID is correct.")
+@app_commands.describe(id="Roblox ID. You can open your profile on Roblox and it will be the number in the URL.", verify="You have verified that your ROBLOX ID is correct.")
 async def staffapplication (interaction: discord.Interaction, id: int , verify: Literal["No", "Yes"]):
     class Buttons(discord.ui.View):
         def __init__(self, *, timeout=180):
