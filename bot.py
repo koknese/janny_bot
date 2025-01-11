@@ -48,8 +48,12 @@ async def staffapplication (interaction: discord.Interaction, id: int , verify: 
             super().__init__(timeout=timeout)
         @discord.ui.button(label="Accept application",style=discord.ButtonStyle.green)
         async def accept_application(self, interaction:discord.Interaction, view: discord.ui.View):
-            await interaction.user.add_roles(discord.Object(id=1325846183502942238))
-            await interaction.response.send_message("Application accepted!")
+            applicant = interaction.guild.get_member(self.applicant_id)
+            if applicant:
+                await applicant.add_roles(discord.Object(id=1325846183502942238))
+                await interaction.response.send_message("Application accepted!")
+            else:
+                await interaction.response.send_message("Error: Applicant not found in the guild.")
 
     if verify == "Yes":
         embed = discord.Embed(title="Facility Staff Application sent!", color=discord.Color.yellow())
