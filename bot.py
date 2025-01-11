@@ -24,7 +24,7 @@ async def on_ready():
 @bot.event
 async def on_member_join(member):
     patientID = 1325846599003541545
-    role_patient = discord.Object(id=role_patient)
+    role_patient = discord.Object(id=patientID)
     await member.add_roles(role_patient)
 
 @tree.command(
